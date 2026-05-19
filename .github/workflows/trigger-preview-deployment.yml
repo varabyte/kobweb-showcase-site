@@ -1,0 +1,20 @@
+# When the user checks code into the `staging` branch, we'll send an event to
+# the `varabyte/kobweb-showcase-site-preview` repo to trigger a deployment.
+
+name: Trigger preview deployment
+on:
+  push:
+    branches:
+      - staging
+  workflow_dispatch: # allow manual triggering
+
+jobs:
+  trigger-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch event to preview repo
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.KOBWEB_SITE_PAT }}
+          repository: varabyte/kobweb-showcase-site-preview
+          event-type: deploy-site-preview
