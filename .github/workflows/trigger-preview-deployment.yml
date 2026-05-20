@@ -15,6 +15,6 @@ jobs:
       - name: Dispatch event to preview repo
         uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ secrets.KOBWEB_SITE_PAT }}
+          token: ${{ secrets.KOBWEB_SHOWCASE_SITE_PAT }}
           repository: varabyte/kobweb-showcase-site-preview
           event-type: deploy-site-preview
