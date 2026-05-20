@@ -59,7 +59,7 @@ fun SubmitPage() {
         }
 
         Link(
-            path = "https://github.com/lifestreamy/kobweb-showcase-data-prototype/issues/new",
+            path = "https://github.com/varabyte/kobweb-showcase-db/issues/new?template=submit-entry.yml",
             text = AppStrings.OPEN_ISSUE_BTN,
             modifier = Modifier
                 .color(palette.primary)
