@@ -27,26 +27,29 @@ fun initSiteStyles(ctx: InitSilkContext) {
         }
     }
 
+    // min-height:100% on both so things grow with content — no hard height cap at viewport
+    ctx.stylesheet.registerStyleBase("html, body") {
+        Modifier
+            .minHeight(100.percent)
+            .margin(0.px)
+            .padding(0.px)
+    }
+
     ctx.stylesheet.registerStyleBase("body") {
         Modifier
-            // Inter for body — clean, modern, highly legible
             .fontFamily("Inter", "system-ui", "-apple-system", "sans-serif")
             .fontSize(16.px)
             .lineHeight(1.6)
     }
 
-    // Load Inter from Google Fonts via a global @import
-    // (Kobweb injects this into the <head> via registerStyle on ":root")
     ctx.stylesheet.registerStyleBase(":root") {
-        Modifier  // token anchor — fonts loaded via index.html <link> or kobweb.conf
+        Modifier
     }
 
     ctx.theme.modifyStyleBase(HorizontalDividerStyle) {
         Modifier.fillMaxWidth()
     }
 }
-
-// Typography styles
 
 val HeadlineTextStyle = CssStyle.base {
     Modifier
@@ -64,8 +67,6 @@ val SubheadlineTextStyle = CssStyle.base {
         .textAlign(TextAlign.Start)
         .color(colorMode.toPalette().color.toRgb().copyf(alpha = 0.7f))
 }
-
-// Button variants
 
 val CircleButtonVariant = ButtonStyle.addVariantBase {
     Modifier

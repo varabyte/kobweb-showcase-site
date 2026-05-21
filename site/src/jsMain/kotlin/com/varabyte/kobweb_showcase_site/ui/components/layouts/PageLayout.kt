@@ -44,36 +44,29 @@ fun PageLayout(ctx: PageContext, content: @Composable () -> Unit) {
         document.title = "Kobweb Showcase — ${data.title}"
     }
 
-    Box(
+    // CanvasBackground is position:fixed so it always fills the viewport regardless
+    // of page scroll. The outer Box just needs to be a flex column that grows with
+    // content — minHeight 100vh so short pages still fill the screen.
+    CanvasBackground()
+
+    Column(
         Modifier
             .fillMaxWidth()
             .minHeight(100.vh)
-            .gridTemplateRows { size(1.fr); size(minContent) },
-        contentAlignment = Alignment.Center
+            .position(Position.Relative)
+            .zIndex(1),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        // Canvas is now a sibling to the main content, rendering underneath due to z-index mapping
-        CanvasBackground()
-
-        // Z-Index 1 ensures the main content (Nav + Cards) sits physically above the Canvas background
+        NavHeader()
         Column(
-            Modifier
-                .fillMaxSize()
-                .gridRow(1)
-                .position(Position.Relative)
-                .zIndex(1),
+            // fillMaxWidth + flex-grow so this section expands and pushes footer down
+            Modifier.fillMaxWidth().flexGrow(1),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            NavHeader()
             Div(PageContentStyle.toAttrs()) {
                 content()
             }
         }
-        Footer(
-            Modifier
-                .fillMaxWidth()
-                .gridRow(2)
-                .position(Position.Relative)
-                .zIndex(1)
-        )
+        Footer(Modifier.fillMaxWidth())
     }
 }
