@@ -1,11 +1,11 @@
 package com.varabyte.kobweb_showcase_site.ui.pages
 
 import androidx.compose.runtime.*
-import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.*
+import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
+import com.varabyte.kobweb.compose.ui.modifiers.gap
 import com.varabyte.kobweb.core.AppGlobals
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
@@ -23,7 +23,6 @@ import com.varabyte.kobweb_showcase_site.ui.components.widgets.SkeletonCard
 import com.varabyte.kobweb_showcase_site.worker.FetchShowcaseWorker
 import org.jetbrains.compose.web.css.cssRem
 
-
 @InitRoute
 fun initShowcasePage(ctx: InitRouteContext) {
     ctx.data.add(PageLayoutData("Showcase"))
@@ -33,12 +32,12 @@ fun initShowcasePage(ctx: InitRouteContext) {
 @Layout(".ui.components.layouts.PageLayout")
 @Composable
 fun ShowcasePage() {
-    var sites     by remember { mutableStateOf<List<ShowcaseSite>>(emptyList()) }
+    var sites by remember { mutableStateOf<List<ShowcaseSite>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
 
     val worker = rememberWorker {
         FetchShowcaseWorker { response ->
-            sites     = response.sites
+            sites = response.sites
             isLoading = false
         }
     }
@@ -57,14 +56,14 @@ fun ShowcasePage() {
         if (isLoading) {
             SimpleGrid(
                 numColumns = numColumns(base = 1, sm = 2, md = 3),
-                modifier   = Modifier.fillMaxWidth().gap(1.5.cssRem)
+                modifier = Modifier.fillMaxWidth().gap(1.5.cssRem)
             ) {
                 repeat(6) { SkeletonCard() }
             }
         } else {
             SimpleGrid(
                 numColumns = numColumns(base = 1, sm = 2, md = 3),
-                modifier   = Modifier.fillMaxWidth().gap(1.5.cssRem)
+                modifier = Modifier.fillMaxWidth().gap(1.5.cssRem)
             ) {
                 sites.forEach { site -> ShowcaseCard(site) }
             }
