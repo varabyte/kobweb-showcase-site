@@ -1,15 +1,15 @@
 package com.varabyte.kobweb_showcase_site.ui.components.sections
 
 import androidx.compose.runtime.Composable
+import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.css.TextAlign
+import com.varabyte.kobweb.compose.css.TextDecorationLine
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Row
+import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.display
-import com.varabyte.kobweb.compose.ui.modifiers.height
-import com.varabyte.kobweb.compose.ui.modifiers.textAlign
+import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.compose.ui.toAttrs
-import com.varabyte.kobweb.core.App
 import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.components.navigation.Link
 import com.varabyte.kobweb.silk.components.text.SpanText
@@ -19,20 +19,47 @@ import com.varabyte.kobweb_showcase_site.ui.locales.AppStrings
 import com.varabyte.kobweb_showcase_site.ui.styles.FooterStyle
 import com.varabyte.kobweb_showcase_site.ui.theme.toSitePalette
 import org.jetbrains.compose.web.css.DisplayStyle
+import org.jetbrains.compose.web.css.LineStyle
 import org.jetbrains.compose.web.css.cssRem
+import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.Span
+import org.jetbrains.compose.web.dom.Text
 
 
 @Composable
 fun Footer(modifier: Modifier = Modifier) {
-    Row(FooterStyle.toModifier().then(modifier), horizontalArrangement = Arrangement.Center) {
+    val palette = ColorMode.current.toSitePalette()
+
+    Row(
+        FooterStyle.toModifier().then(modifier).gap(1.5.cssRem),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Built with Kobweb
         Span(Modifier.textAlign(TextAlign.Center).toAttrs()) {
-            val sitePalette = ColorMode.current.toSitePalette()
             SpanText(AppStrings.BUILT_WITH)
-            Link("https://kobweb.varabyte.com") {
-                // Block display overrides inline display of the <img> tag, so it calculates centering better
-                Image("/kobweb-logo.png", "Kobweb Logo", Modifier.height(2.cssRem).display(DisplayStyle.Block))
+            Link(AppStrings.KOBWEB_URL) {
+                Image(
+                    "/kobweb-logo.png", "Kobweb Logo", Modifier.height(2.cssRem).display(DisplayStyle.Block)
+                )
             }
+        }
+
+        // Separator
+        SpanText(
+            "·", modifier = Modifier.color(palette.textMuted).fontSize(1.2.cssRem)
+        )
+
+        // Credit — glowing green text linking to Tim's GitHub
+        Link(
+            AppStrings.FOOTER_CREDIT_URL,
+            modifier = Modifier.color(palette.primary).fontWeight(FontWeight.SemiBold).fontSize(0.85.cssRem)
+                .textDecorationLine(TextDecorationLine.None)
+                .border(1.px, LineStyle.Solid, palette.primary.toRgb().copyf(alpha = 0.35f)).borderRadius(0.5.cssRem)
+                .padding(topBottom = 0.2.cssRem, leftRight = 0.6.cssRem)
+                .boxShadow(0.px, 0.px, 8.px, color = palette.primary.toRgb().copyf(alpha = 0.25f))
+        ) {
+            Text(AppStrings.FOOTER_CREDIT_TEXT)
         }
     }
 }
