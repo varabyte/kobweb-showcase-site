@@ -17,9 +17,11 @@ import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Text
 
 // Special styling for the Varabyte-Official tag
+// Using some hand-picked and tested numbers for timings
 val GlintAnim = Keyframes {
-    0.percent { Modifier.styleModifier { property("background-position", "-200% center") } }
-    100.percent { Modifier.styleModifier { property("background-position", "200% center") } }
+    0.percent { Modifier.styleModifier { property("background-position", "90% center") } }
+    40.percent { Modifier.styleModifier { property("background-position", "10% center") } }
+    100.percent { Modifier.styleModifier { property("background-position", "10% center") } }
 }
 
 val OfficialTagStyle = CssStyle {
@@ -39,12 +41,18 @@ val OfficialTagStyle = CssStyle {
             .styleModifier {
                 property(
                     "background-image",
-                    "linear-gradient(110deg, transparent 40%, rgba(255, 255, 255, 0.8) 50%, transparent 60%)"
+                    """linear-gradient(110deg, 
+                        |transparent 40%, 
+                        |rgba(255, 255, 255, 0.05) 45%, 
+                        |rgba(255, 255, 255, 0.6) 50%, 
+                        |rgba(255, 255, 255, 0.05) 55%, 
+                        |transparent 60%)""".trimMargin()
                 )
-                property("background-size", "200% auto")
+                property("background-size", "300% 100%")
+                property("background-repeat", "no-repeat")
             }.animation(
                 GlintAnim.toAnimation(
-                    duration = 2.5.s,
+                    duration = 10.s,
                     timingFunction = AnimationTimingFunction.Linear,
                     iterationCount = AnimationIterationCount.Infinite
                 )
