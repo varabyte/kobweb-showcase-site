@@ -10,18 +10,16 @@ import com.varabyte.kobweb.compose.dom.svg.Path
 import com.varabyte.kobweb.compose.dom.svg.Polyline
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Color
+import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.silk.style.CssStyle
 import com.varabyte.kobweb.silk.style.selectors.hover
-import com.varabyte.kobweb.silk.theme.colors.ColorMode
-import com.varabyte.kobweb_showcase_site.ui.theme.toSitePalette
+import com.varabyte.kobweb_showcase_site.ui.styles.frostedGlass
 import org.jetbrains.compose.web.css.*
-
 
 val ExternalLinkBtnStyle = CssStyle {
     base {
-        val palette = colorMode.toSitePalette()
         Modifier
             .position(Position.Absolute)
             .top(0.5.cssRem)
@@ -29,8 +27,8 @@ val ExternalLinkBtnStyle = CssStyle {
             .width(2.5.cssRem)
             .height(2.5.cssRem)
             .borderRadius(0.375.cssRem)
-            .backgroundColor(palette.surface.toRgb().copyf(alpha = 0.5f))
-            .border(1.px, LineStyle.Solid, palette.border)
+            .frostedGlass(Colors.Black.copyf(alpha = 0.45f), 4.px)
+            .border(1.px, LineStyle.Solid, Colors.White.copyf(alpha = 0.25f))
             .display(DisplayStyle.Flex)
             .alignItems(AlignItems.Center)
             .justifyContent(com.varabyte.kobweb.compose.css.JustifyContent.Center)
@@ -43,17 +41,16 @@ val ExternalLinkBtnStyle = CssStyle {
             )
     }
     hover {
-        val palette = colorMode.toSitePalette()
         Modifier
-            .backgroundColor(palette.primary.toRgb().copyf(alpha = 0.15f))
-            .border(1.px, LineStyle.Solid, palette.primary)
+            .backgroundColor(Colors.Black.copyf(alpha = 0.85f))
+            .border(1.px, LineStyle.Solid, Colors.White.copyf(alpha = 0.6f))
     }
 }
 
 @Composable
 fun ExternalLinkIcon(
     modifier: Modifier = Modifier,
-    color: Color = ColorMode.current.toSitePalette().primary,
+    color: Color = Colors.White,
     iconSize: CSSSizeValue<CSSUnit.rem> = 1.2.cssRem
 ) {
     com.varabyte.kobweb.compose.dom.svg.Svg(

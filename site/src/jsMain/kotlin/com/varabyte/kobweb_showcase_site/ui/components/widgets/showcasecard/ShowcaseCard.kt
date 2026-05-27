@@ -17,6 +17,7 @@ import com.varabyte.kobweb.silk.style.toModifier
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import com.varabyte.kobweb_showcase_site.model.ShowcaseSite
 import com.varabyte.kobweb_showcase_site.ui.locales.AppStrings
+import com.varabyte.kobweb_showcase_site.ui.styles.frostedGlass
 import com.varabyte.kobweb_showcase_site.ui.theme.toSitePalette
 import org.jetbrains.compose.web.ExperimentalComposeWebApi
 import org.jetbrains.compose.web.css.*
@@ -31,7 +32,7 @@ val ShowcaseCardStyle = CssStyle {
         val palette = colorMode.toSitePalette()
         Modifier
             .fillMaxWidth()
-            .backgroundColor(palette.surface)
+            .frostedGlass(palette.surface.toRgb().copyf(alpha = if (colorMode.isLight) 0.45f else 0.35f), 2.px)
             .border(1.px, LineStyle.Solid, palette.border)
             .borderRadius(0.75.cssRem)
             .overflow(Overflow.Hidden)
@@ -52,7 +53,6 @@ val ShowcaseCardStyle = CssStyle {
             .boxShadow(0.px, 8.px, 28.px, color = palette.primary.toRgb().copyf(alpha = 0.25f))
     }
 }
-
 
 @Composable
 fun ShowcaseCard(site: ShowcaseSite) {
@@ -83,19 +83,18 @@ fun ShowcaseCard(site: ShowcaseSite) {
                     SpanText(
                         site.name,
                         modifier = Modifier
-                            .fontWeight(FontWeight.SemiBold)
+                            .fontWeight(FontWeight.Bold)
                             .fontSize(1.05.cssRem)
                             .color(palette.primary)
                             .flexGrow(1)
                     )
                 }
-                P(
-                    attrs = Modifier
-                        .margin(0.px)
-                        .fontSize(0.9.cssRem)
-                        .color(palette.textMuted)
-                        .lineHeight(1.55)
-                        .toAttrs()
+                P(attrs = Modifier
+                    .margin(0.px)
+                    .fontSize(0.9.cssRem)
+                    .color(palette.textMuted)
+                    .lineHeight(1.55)
+                    .toAttrs()
                 ) { Text(site.description) }
 
                 Row(Modifier.flexWrap(FlexWrap.Wrap).margin(top = 0.5.cssRem)) {

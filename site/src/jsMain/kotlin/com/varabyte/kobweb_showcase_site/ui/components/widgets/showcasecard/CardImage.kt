@@ -6,6 +6,7 @@ import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.css.TransitionTimingFunction
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
+import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.silk.style.CssStyle
 import com.varabyte.kobweb_showcase_site.ui.theme.toSitePalette
 import org.jetbrains.compose.web.css.*
@@ -33,6 +34,7 @@ val CardImageStyle = CssStyle {
             .fillMaxWidth()
             .height(100.percent)
             .objectFit(ObjectFit.Cover)
+            .styleModifier { property("object-position", "top center") }
             .opacity(0)
             .transition(Transition.of("opacity", 0.4.s, TransitionTimingFunction.EaseIn))
     }

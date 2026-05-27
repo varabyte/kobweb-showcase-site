@@ -2,11 +2,11 @@ package com.varabyte.kobweb_showcase_site.ui.components.widgets.showcasecard
 
 import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.css.*
+import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.graphics.Color
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.compose.ui.styleModifier
@@ -18,11 +18,11 @@ import com.varabyte.kobweb.silk.style.toModifier
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import com.varabyte.kobweb_showcase_site.model.ShowcaseSite
 import com.varabyte.kobweb_showcase_site.ui.locales.AppStrings
+import com.varabyte.kobweb_showcase_site.ui.styles.frostedGlass
 import com.varabyte.kobweb_showcase_site.ui.theme.toSitePalette
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.css.AlignItems.Companion.Center
 import org.jetbrains.compose.web.dom.*
-
 
 val ExpandedOverlayStyle = CssStyle {
     base {
@@ -43,7 +43,7 @@ val ExpandedCardStyle = CssStyle {
     base {
         val palette = colorMode.toSitePalette()
         Modifier
-            .backgroundColor(palette.surface)
+            .frostedGlass(palette.surface.toRgb().copyf(alpha = if (colorMode.isLight) 0.5f else 0.3f), 8.px)
             .border(1.px, LineStyle.Solid, palette.border)
             .borderRadius(1.cssRem)
             .overflow(Overflow.Hidden)
@@ -60,6 +60,7 @@ val ExpandedCardStyle = CssStyle {
 @Composable
 fun ExpandedCard(site: ShowcaseSite, onDismiss: () -> Unit) {
     val palette = ColorMode.current.toSitePalette()
+    val isLight = ColorMode.current.isLight
 
     Div(
         attrs = ExpandedOverlayStyle.toModifier()
@@ -79,6 +80,7 @@ fun ExpandedCard(site: ShowcaseSite, onDismiss: () -> Unit) {
                         .fillMaxWidth()
                         .maxHeight(360.px)
                         .objectFit(ObjectFit.Cover)
+                        .styleModifier { property("object-position", "top center") }
                         .display(DisplayStyle.Block)
                         .toAttrs()
                 )
@@ -90,7 +92,7 @@ fun ExpandedCard(site: ShowcaseSite, onDismiss: () -> Unit) {
                         .right(0.75.cssRem)
                         .width(2.5.cssRem)
                         .height(2.5.cssRem)
-                        .backgroundColor(palette.surface.toRgb().copyf(alpha = 0.85f))
+                        .frostedGlass(Colors.Black.copyf(alpha = 0.5f), 8.px)
                         .borderRadius(50.percent)
                         .display(DisplayStyle.Flex)
                         .alignItems(Center)
@@ -98,19 +100,16 @@ fun ExpandedCard(site: ShowcaseSite, onDismiss: () -> Unit) {
                         .cursor(Cursor.Pointer)
                         .onClick { onDismiss() }
                 ) {
-                    CloseIcon(Modifier.color(palette.textPrimary))
+                    CloseIcon(Modifier.color(Colors.White))
                 }
             }
 
-            Column(Modifier
-                .padding(1.5.cssRem)
-                .gap(0.75.cssRem)
-                .styleModifier { property("overflow-y", "auto") }) {
+            Column(Modifier.padding(1.5.cssRem).gap(0.75.cssRem).styleModifier { property("overflow-y", "auto") }) {
                 H2(
                     attrs = Modifier
                         .margin(0.px)
                         .fontSize(1.25.cssRem)
-                        .color(palette.textPrimary)
+                        .color(palette.primary)
                         .toAttrs()
                 ) { Text(site.name) }
 
@@ -141,14 +140,18 @@ fun ExpandedCard(site: ShowcaseSite, onDismiss: () -> Unit) {
                     attrs = Modifier
                         .margin(top = 0.5.cssRem)
                         .padding(topBottom = 0.6.cssRem, leftRight = 1.4.cssRem)
-                        .backgroundColor(palette.primary)
-                        .color(Color.rgb(0x06080B))
+                        .frostedGlass(palette.primary.toRgb().copyf(alpha = if (isLight) 0.15f else 0.25f), 4.px)
+                        .border(1.px, LineStyle.Solid, palette.primary.toRgb().copyf(alpha = if (isLight) 0.3f else 0.4f))
+                        .color(palette.primary)
                         .borderRadius(0.5.cssRem)
-                        .fontWeight(FontWeight.SemiBold)
+                        .fontWeight(FontWeight.Medium)
                         .fontSize(0.95.cssRem)
                         .textDecorationLine(TextDecorationLine.None)
                         .cursor(Cursor.Pointer)
                         .display(DisplayStyle.InlineBlock)
+                        .transition(
+                            Transition.of("background-color", 0.2.s, TransitionTimingFunction.EaseOut)
+                        )
                         .toAttrs {
                             attr("target", "_blank")
                             attr("rel", "noopener noreferrer")
