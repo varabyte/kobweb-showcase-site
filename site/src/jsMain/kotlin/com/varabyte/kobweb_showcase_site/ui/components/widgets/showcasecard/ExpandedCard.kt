@@ -2,13 +2,16 @@ package com.varabyte.kobweb_showcase_site.ui.components.widgets.showcasecard
 
 import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.css.*
+import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Color
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.*
+import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.compose.ui.toAttrs
+import com.varabyte.kobweb.silk.components.icons.CloseIcon
 import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.style.CssStyle
 import com.varabyte.kobweb.silk.style.toModifier
@@ -46,14 +49,16 @@ val ExpandedCardStyle = CssStyle {
             .overflow(Overflow.Hidden)
             .maxWidth(640.px)
             .width(92.percent)
+            .maxHeight(90.vh)
+            .display(DisplayStyle.Flex)
+            .flexDirection(FlexDirection.Column)
             .cursor(Cursor.Auto)
             .boxShadow(0.px, 24.px, 64.px, color = Colors.Black.copyf(alpha = 0.45f))
     }
 }
 
-
 @Composable
-internal fun ExpandedCard(site: ShowcaseSite, onDismiss: () -> Unit) {
+fun ExpandedCard(site: ShowcaseSite, onDismiss: () -> Unit) {
     val palette = ColorMode.current.toSitePalette()
 
     Div(
@@ -66,18 +71,41 @@ internal fun ExpandedCard(site: ShowcaseSite, onDismiss: () -> Unit) {
                 .onClick { it.stopPropagation() }
                 .toAttrs()
         ) {
-            Img(
-                src = site.imageUrl,
-                alt = site.name,
-                attrs = Modifier
-                    .fillMaxWidth()
-                    // Fixed max height for expanded view, cover ensures it centers and crops nicely
-                    .maxHeight(360.px)
-                    .objectFit(ObjectFit.Cover)
-                    .display(DisplayStyle.Block)
-                    .toAttrs()
-            )
-            Column(Modifier.padding(1.5.cssRem).gap(0.75.cssRem)) {
+            Box(Modifier.fillMaxWidth().position(Position.Relative)) {
+                Img(
+                    src = site.imageUrl,
+                    alt = site.name,
+                    attrs = Modifier
+                        .fillMaxWidth()
+                        .maxHeight(360.px)
+                        .objectFit(ObjectFit.Cover)
+                        .display(DisplayStyle.Block)
+                        .toAttrs()
+                )
+
+                Box(
+                    Modifier
+                        .position(Position.Absolute)
+                        .top(0.75.cssRem)
+                        .right(0.75.cssRem)
+                        .width(2.5.cssRem)
+                        .height(2.5.cssRem)
+                        .backgroundColor(palette.surface.toRgb().copyf(alpha = 0.85f))
+                        .borderRadius(50.percent)
+                        .display(DisplayStyle.Flex)
+                        .alignItems(Center)
+                        .justifyContent(com.varabyte.kobweb.compose.css.JustifyContent.Center)
+                        .cursor(Cursor.Pointer)
+                        .onClick { onDismiss() }
+                ) {
+                    CloseIcon(Modifier.color(palette.textPrimary))
+                }
+            }
+
+            Column(Modifier
+                .padding(1.5.cssRem)
+                .gap(0.75.cssRem)
+                .styleModifier { property("overflow-y", "auto") }) {
                 H2(
                     attrs = Modifier
                         .margin(0.px)
@@ -86,21 +114,20 @@ internal fun ExpandedCard(site: ShowcaseSite, onDismiss: () -> Unit) {
                         .toAttrs()
                 ) { Text(site.name) }
 
-                P(
-                    attrs = Modifier
-                        .margin(0.px)
-                        .fontSize(0.9.cssRem)
-                        .color(palette.textMuted)
-                        .lineHeight(1.6)
-                        .toAttrs()
+                P(attrs = Modifier
+                    .margin(0.px)
+                    .fontSize(0.9.cssRem)
+                    .color(palette.textMuted)
+                    .lineHeight(1.6)
+                    .toAttrs()
                 ) { Text(site.description) }
 
                 if (site.siteType.isNotEmpty()) {
-                    SpanText(
-                        "Type: ${site.siteType}",
-                        modifier = Modifier.fontSize(0.85.cssRem).color(palette.textMuted)
-                            .fontWeight(FontWeight.SemiBold)
-                    )
+                    SpanText("Type: ${site.siteType}",
+                        modifier = Modifier
+                            .fontSize(0.85.cssRem)
+                            .color(palette.textMuted)
+                            .fontWeight(FontWeight.SemiBold))
                 }
 
                 Row(Modifier.flexWrap(FlexWrap.Wrap)) {
@@ -126,7 +153,7 @@ internal fun ExpandedCard(site: ShowcaseSite, onDismiss: () -> Unit) {
                             attr("target", "_blank")
                             attr("rel", "noopener noreferrer")
                         }
-                ) { Text("${AppStrings.VISIT_SITE} ↗") }
+                ) { Text(AppStrings.VISIT_SITE) }
             }
         }
     }

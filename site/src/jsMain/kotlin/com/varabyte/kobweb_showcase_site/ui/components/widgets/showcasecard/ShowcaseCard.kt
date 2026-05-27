@@ -54,7 +54,6 @@ val ShowcaseCardStyle = CssStyle {
 }
 
 
-
 @Composable
 fun ShowcaseCard(site: ShowcaseSite) {
     val palette = ColorMode.current.toSitePalette()
