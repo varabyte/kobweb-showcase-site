@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
-group = "com.varabyte.kobweb_showcase_site.worker"
+group = "com.varabyte.kobweb.showcase.site.worker"
 version = "1.0-SNAPSHOT"
 
 kotlin {

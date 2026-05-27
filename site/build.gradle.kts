@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.kobweb.application)
 }
 
-group = "com.varabyte.kobweb_showcase_site"
+group = "com.varabyte.kobweb.showcase.site"
 version = "1.0-SNAPSHOT"
 
 // URL resolution: CI Env > showcase.config.properties > hardcoded fallback
@@ -27,11 +27,11 @@ kobweb {
         }
         globals.put("SHOWCASE_DATA_URL", dataUrl)
     }
-    pagesPackage.set("com.varabyte.kobweb_showcase_site.ui.pages")
+    pagesPackage.set("com.varabyte.kobweb.showcase.site.ui.pages")
 }
 
 kotlin {
-    configAsKobwebApplication("kobweb_showcase_site")
+    configAsKobwebApplication("kobweb.showcase.site")
 
     sourceSets {
         jsMain.dependencies {
