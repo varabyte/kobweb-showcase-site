@@ -18,8 +18,8 @@ import com.varabyte.kobweb.worker.rememberWorker
 import com.varabyte.kobweb_showcase_site.model.ShowcaseSite
 import com.varabyte.kobweb_showcase_site.ui.components.layouts.PageLayoutData
 import com.varabyte.kobweb_showcase_site.ui.components.sections.HeroSection
-import com.varabyte.kobweb_showcase_site.ui.components.widgets.ShowcaseCard
-import com.varabyte.kobweb_showcase_site.ui.components.widgets.SkeletonCard
+import com.varabyte.kobweb_showcase_site.ui.components.widgets.showcasecard.ShowcaseCard
+import com.varabyte.kobweb_showcase_site.ui.components.widgets.showcasecard.SkeletonCard
 import com.varabyte.kobweb_showcase_site.worker.FetchShowcaseWorker
 import org.jetbrains.compose.web.css.cssRem
 

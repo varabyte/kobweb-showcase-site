@@ -1,7 +1,8 @@
-package com.varabyte.kobweb_showcase_site.ui.components.widgets
+package com.varabyte.kobweb_showcase_site.ui.components.widgets.showcasecard
 
 import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.css.AnimationIterationCount
+import com.varabyte.kobweb.compose.css.Overflow
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Modifier
@@ -18,15 +19,13 @@ import com.varabyte.kobweb_showcase_site.ui.theme.toSitePalette
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Div
 
-// Shimmer animation – reused by ShowcaseCard image placeholder
+// Shimmer animation for when card content is loading
 val ShimmerAnim = Keyframes {
-    0.percent   { Modifier.opacity(1f) }
-    50.percent  { Modifier.opacity(0.45f) }
+    0.percent { Modifier.opacity(1f) }
+    50.percent { Modifier.opacity(0.45f) }
     100.percent { Modifier.opacity(1f) }
 }
 
-// NOTE: `SkeletonBaseStyle` is intentionally `internal` so ShowcaseCard can
-//       reference it for its image-placeholder div without re-declaring the style.
 val SkeletonBaseStyle = CssStyle.base {
     val base = if (colorMode == ColorMode.DARK) SiteColors.SkeletonBase else rgb(0xE0E4EC)
     Modifier
@@ -34,9 +33,9 @@ val SkeletonBaseStyle = CssStyle.base {
         .borderRadius(0.375.cssRem)
         .animation(
             ShimmerAnim.toAnimation(
-                duration        = 1.5.s,
-                timingFunction  = AnimationTimingFunction.EaseInOut,
-                iterationCount  = AnimationIterationCount.Infinite,
+                duration = 1.5.s,
+                timingFunction = AnimationTimingFunction.EaseInOut,
+                iterationCount = AnimationIterationCount.Infinite,
             )
         )
 }
@@ -55,7 +54,7 @@ fun SkeletonCard() {
             .backgroundColor(palette.surface)
             .border(1.px, LineStyle.Solid, palette.border)
             .borderRadius(0.75.cssRem)
-            .overflow(com.varabyte.kobweb.compose.css.Overflow.Hidden)
+            .overflow(Overflow.Hidden)
     ) {
         // Image placeholder
         SkeletonBox(Modifier.fillMaxWidth().height(180.px).borderRadius(0.px))
