@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.minHeight
+import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.core.App
 import com.varabyte.kobweb.silk.SilkApp
 import com.varabyte.kobweb.silk.components.layout.Surface
@@ -19,6 +20,11 @@ import org.jetbrains.compose.web.css.vh
 fun initGlobalStyles(ctx: InitSilkContext) {
     ctx.stylesheet.registerStyleBase("html, body") {
         Modifier.minHeight(100.percent)
+
+        // to prevent DuckDuckGo and similar browsers from tampering with theme and inverting colors
+        Modifier.styleModifier {
+            property("color-scheme", "light dark")
+        }
     }
 }
 
