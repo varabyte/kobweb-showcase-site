@@ -50,13 +50,16 @@ val OfficialTagStyle = CssStyle {
                 )
                 property("background-size", "300% 100%")
                 property("background-repeat", "no-repeat")
-            }.animation(
-                GlintAnim.toAnimation(
-                    duration = 10.s,
-                    timingFunction = AnimationTimingFunction.Linear,
-                    iterationCount = AnimationIterationCount.Infinite
-                )
+            }
+    }
+    cssRule(CSSMediaQuery.Raw("(prefers-reduced-motion: no-preference)")) {
+        Modifier.animation(
+            GlintAnim.toAnimation(
+                duration = 10.s,
+                timingFunction = AnimationTimingFunction.Linear,
+                iterationCount = AnimationIterationCount.Infinite
             )
+        )
     }
 }
 
