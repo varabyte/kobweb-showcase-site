@@ -8,6 +8,7 @@ import com.varabyte.kobweb.compose.css.CSSPosition
 import com.varabyte.kobweb.compose.css.Edge
 import com.varabyte.kobweb.compose.css.FontStyle
 import com.varabyte.kobweb.compose.css.StyleVariable
+import com.varabyte.kobweb.compose.css.UserSelect
 import com.varabyte.kobweb.compose.css.functions.linearGradient
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.ui.Modifier
@@ -49,6 +50,7 @@ val BasicTagStyle = CssStyle.base {
         .border(1.px, LineStyle.Solid, tagBorderColor.value())
         .padding(leftRight = 0.6.cssRem, topBottom = 0.2.cssRem)
         .margin(right = 0.4.cssRem, bottom = 0.4.cssRem)
+        .userSelect(UserSelect.None)
 }
 
 /** A tag that sticks out to grab the user's attention as something special. */
