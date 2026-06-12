@@ -9,7 +9,6 @@ import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.*
-import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.showcase.site.model.ShowcaseSite
 import com.varabyte.kobweb.showcase.site.ui.components.KobwebJustifyContent
@@ -81,7 +80,7 @@ fun ExpandedCard(site: ShowcaseSite, onDismiss: () -> Unit) {
                         .fillMaxWidth()
                         .maxHeight(360.px)
                         .objectFit(ObjectFit.Cover)
-                        .styleModifier { property("object-position", "top center") }
+                        .objectPosition(CSSPosition.Top)
                         .display(DisplayStyle.Block)
                         .toAttrs()
                 )
@@ -105,7 +104,12 @@ fun ExpandedCard(site: ShowcaseSite, onDismiss: () -> Unit) {
                 }
             }
 
-            Column(Modifier.padding(1.5.cssRem).gap(0.75.cssRem).styleModifier { property("overflow-y", "auto") }) {
+            Column(
+                Modifier
+                    .padding(1.5.cssRem)
+                    .gap(0.75.cssRem)
+                    .overflow { y(Overflow.Auto) }
+            ) {
                 H2(
                     attrs = Modifier
                         .margin(0.px)
