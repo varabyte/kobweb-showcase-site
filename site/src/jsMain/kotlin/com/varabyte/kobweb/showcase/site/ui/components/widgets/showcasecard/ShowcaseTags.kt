@@ -7,6 +7,7 @@ import com.varabyte.kobweb.compose.css.BackgroundSize
 import com.varabyte.kobweb.compose.css.CSSPosition
 import com.varabyte.kobweb.compose.css.Edge
 import com.varabyte.kobweb.compose.css.FontStyle
+import com.varabyte.kobweb.compose.css.StyleVariable
 import com.varabyte.kobweb.compose.css.functions.linearGradient
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.ui.Modifier
@@ -16,7 +17,10 @@ import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.showcase.site.ui.theme.toSitePalette
 import com.varabyte.kobweb.silk.style.CssStyle
 import com.varabyte.kobweb.silk.style.animation.Keyframes
+import com.varabyte.kobweb.silk.style.base
+import com.varabyte.kobweb.silk.style.extendedBy
 import com.varabyte.kobweb.silk.style.toModifier
+import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Text
 
@@ -30,19 +34,29 @@ val GlintAnim = Keyframes {
     100.percent { endPos }
 }
 
-val OfficialTagStyle = CssStyle {
+private val tagBackground by StyleVariable<CSSColorValue>()
+private val tagColor by StyleVariable<CSSColorValue>()
+private val tagBorderColor by StyleVariable<CSSColorValue>()
+
+val BasicTagStyle = CssStyle.base {
+    Modifier
+        .backgroundColor(tagBackground.value())
+        .color(tagColor.value())
+        .fontSize(0.75.cssRem)
+        .fontWeight(700)
+        .fontStyle(FontStyle.Italic)
+        .borderRadius(2.cssRem)
+        .border(1.px, LineStyle.Solid, tagBorderColor.value())
+        .padding(leftRight = 0.6.cssRem, topBottom = 0.2.cssRem)
+        .margin(right = 0.4.cssRem, bottom = 0.4.cssRem)
+}
+
+/** A tag that sticks out to grab the user's attention as something special. */
+val OfficialTagStyle = BasicTagStyle.extendedBy {
     base {
         val palette = colorMode.toSitePalette()
         val shadowAlpha = if(colorMode.isLight) 0.6f else 0.4f
-        Modifier.backgroundColor(Color.rgb(0x161B22))
-            .color(Colors.White)
-            .borderRadius(2.cssRem)
-            .padding(leftRight = 0.6.cssRem, topBottom = 0.2.cssRem)
-            .margin(right = 0.4.cssRem, bottom = 0.4.cssRem)
-            .fontSize(0.75.cssRem)
-            .fontWeight(700)
-            .fontStyle(FontStyle.Italic)
-            .border(1.px, LineStyle.Solid, Colors.White.copyf(alpha = 0.4f))
+        Modifier
             .boxShadow(0.px, 0.px, 12.px, color = palette.primary.toRgb().copyf(alpha = shadowAlpha))
             .background {
                 image(
@@ -69,27 +83,22 @@ val OfficialTagStyle = CssStyle {
     }
 }
 
-val CustomTagStyle = CssStyle {
-    base {
-        val palette = colorMode.toSitePalette()
-        val bgAlpha = if (colorMode.isLight) 0.35f else 0.18f
-        val borderAlpha = if (colorMode.isLight) 0.8f else 0.4f
-        Modifier
-            .backgroundColor(palette.accent.toRgb().copyf(alpha = bgAlpha))
-            .color(palette.textPrimary.toRgb().copyf(alpha = 0.7f))
-            .borderRadius(2.cssRem)
-            .padding(leftRight = 0.6.cssRem, topBottom = 0.2.cssRem)
-            .margin(right = 0.4.cssRem, bottom = 0.4.cssRem)
-            .fontSize(0.75.cssRem)
-            .fontWeight(700)
-            .fontStyle(FontStyle.Italic)
-            .border(1.px, LineStyle.Solid, palette.accent.toRgb().copyf(alpha = borderAlpha))
-    }
-}
-
 @Composable
 internal fun TagItem(tag: String) {
-    Box((if (tag == "Varabyte-Official") OfficialTagStyle else CustomTagStyle).toModifier()) {
+    val colorMode = ColorMode.current
+    val palette = colorMode.toSitePalette()
+    val tagStyleModifier = if (tag != "Varabyte-Official") {
+        BasicTagStyle.toModifier()
+            .setVariable(tagBackground, palette.accent.toRgb().copyf(alpha = if (colorMode.isLight) 0.35f else 0.18f))
+            .setVariable(tagColor, palette.textPrimary.toRgb().copyf(alpha = 0.7f))
+            .setVariable(tagBorderColor, palette.accent.toRgb().copyf(alpha = if (colorMode.isLight) 0.8f else 0.4f))
+    } else {
+        OfficialTagStyle.toModifier()
+            .setVariable(tagBackground, Color.rgb(0x161B22))
+            .setVariable(tagColor, Colors.White)
+            .setVariable(tagBorderColor, Colors.White.copyf(alpha = 0.4f))
+    }
+    Box(tagStyleModifier) {
         Text(tag)
     }
 }
