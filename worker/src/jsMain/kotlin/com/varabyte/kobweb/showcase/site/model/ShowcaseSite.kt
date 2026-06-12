@@ -14,6 +14,12 @@ data class ShowcaseSite(
 )
 
 @Serializable
+data class ShowcaseSiteRequest(
+    /** A URL to a json file containing metadata for all Kobweb demo sites. */
+    val dataUrl: String
+)
+
+@Serializable
 data class ShowcaseSiteResponse(
     val sites: List<ShowcaseSite>
 )

@@ -12,15 +12,16 @@ import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
-import com.varabyte.kobweb.silk.components.layout.SimpleGrid
-import com.varabyte.kobweb.silk.components.layout.numColumns
-import com.varabyte.kobweb.worker.rememberWorker
 import com.varabyte.kobweb.showcase.site.model.ShowcaseSite
+import com.varabyte.kobweb.showcase.site.model.ShowcaseSiteRequest
 import com.varabyte.kobweb.showcase.site.ui.components.layouts.PageLayoutData
 import com.varabyte.kobweb.showcase.site.ui.components.sections.HeroSection
 import com.varabyte.kobweb.showcase.site.ui.components.widgets.showcasecard.ShowcaseCard
 import com.varabyte.kobweb.showcase.site.ui.components.widgets.showcasecard.SkeletonCard
 import com.varabyte.kobweb.showcase.site.worker.FetchShowcaseWorker
+import com.varabyte.kobweb.silk.components.layout.SimpleGrid
+import com.varabyte.kobweb.silk.components.layout.numColumns
+import com.varabyte.kobweb.worker.rememberWorker
 import org.jetbrains.compose.web.css.cssRem
 
 @InitRoute
@@ -36,7 +37,7 @@ fun ShowcasePage() {
     var isLoading by remember { mutableStateOf(true) }
 
     val worker = rememberWorker {
-        _root_ide_package_.com.varabyte.kobweb.showcase.site.worker.FetchShowcaseWorker { response ->
+        FetchShowcaseWorker { response ->
             sites = response.sites
             isLoading = false
         }
@@ -44,7 +45,7 @@ fun ShowcasePage() {
 
     LaunchedEffect(Unit) {
         val dataUrl = AppGlobals.getValue("SHOWCASE_DATA_URL")
-        worker.postInput(dataUrl)
+        worker.postInput(ShowcaseSiteRequest(dataUrl))
     }
 
     Column(

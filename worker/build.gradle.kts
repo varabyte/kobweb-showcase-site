@@ -15,6 +15,7 @@ kotlin {
     sourceSets {
         jsMain.dependencies {
             implementation(libs.kobweb.worker)
+            implementation(libs.kobweb.browser.ext)
             api(libs.kotlinx.coroutines.core)
             api(libs.kotlinx.serialization.json)
             api(libs.kobwebx.serialization.kotlinx)
