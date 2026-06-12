@@ -3,6 +3,7 @@ package com.varabyte.kobweb.showcase.site.ui.components.sections
 import androidx.compose.runtime.*
 import com.varabyte.kobweb.browser.dom.ElementTarget.Companion.PreviousSibling
 import com.varabyte.kobweb.compose.css.FontWeight
+import com.varabyte.kobweb.compose.css.TextShadow
 import com.varabyte.kobweb.compose.css.functions.clamp
 import com.varabyte.kobweb.compose.dom.svg.Path
 import com.varabyte.kobweb.compose.dom.svg.Svg
@@ -13,7 +14,6 @@ import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.*
-import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.showcase.site.ui.components.widgets.IconButton
 import com.varabyte.kobweb.showcase.site.ui.locales.AppStrings
@@ -51,13 +51,10 @@ val SiteNameTextStyle = CssStyle.base {
         .fontWeight(FontWeight.Bold)
         .fontSize(1.1.cssRem)
         .color(palette.primary)
-        .styleModifier {
-            property(
-                "text-shadow",
-                "0 0 10px ${palette.primary.toRgb().copyf(alpha = 0.55f)}, " +
-                        "0 0 20px ${palette.primary.toRgb().copyf(alpha = 0.25f)}"
-            )
-        }
+        .textShadow(
+            TextShadow.of(0.px, 0.px, 10.px, palette.primary.toRgb().copyf(alpha = 0.55f)),
+            TextShadow.of(0.px, 0.px, 20.px, palette.primary.toRgb().copyf(alpha = 0.25f))
+        )
 }
 
 @Composable
@@ -87,7 +84,7 @@ private fun GitHubSourceLink() {
             .fontSize(1.25.cssRem)
             .lineHeight(1.0)
             .title(AppStrings.SITE_SOURCE_TOOLTIP)
-            .styleModifier { property("display", "flex") }
+            .display(DisplayStyle.Flex)
     ) {
         // GitHub SVG icon
         Span(attrs = Modifier.toAttrs()) {
