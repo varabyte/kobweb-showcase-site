@@ -8,6 +8,11 @@ import com.varabyte.kobweb.compose.css.TransitionTimingFunction
 import com.varabyte.kobweb.compose.dom.svg.Line
 import com.varabyte.kobweb.compose.dom.svg.Path
 import com.varabyte.kobweb.compose.dom.svg.Polyline
+import com.varabyte.kobweb.compose.dom.svg.SVGFillType
+import com.varabyte.kobweb.compose.dom.svg.SVGStrokeLineCap
+import com.varabyte.kobweb.compose.dom.svg.SVGStrokeLineJoin
+import com.varabyte.kobweb.compose.dom.svg.SVGStrokeType
+import com.varabyte.kobweb.compose.dom.svg.Svg
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Color
 import com.varabyte.kobweb.compose.ui.graphics.Colors
@@ -54,31 +59,31 @@ fun ExternalLinkIcon(
     color: Color = Colors.White,
     iconSize: CSSSizeValue<CSSUnit.rem> = 1.2.cssRem
 ) {
-    com.varabyte.kobweb.compose.dom.svg.Svg(
+    Svg(
         attrs = modifier
             .width(iconSize)
             .height(iconSize)
             .color(color)
             .toAttrs {
-                attr("viewBox", "0 0 24 24")
-                attr("fill", "none")
-                attr("stroke", "currentColor")
-                attr("stroke-width", "2.5")
-                attr("stroke-linecap", "round")
-                attr("stroke-linejoin", "round")
+                viewBox(0, 0, 24, 24)
+                fill(SVGFillType.None)
+                stroke(SVGStrokeType.CurrentColor)
+                strokeWidth(2.5f)
+                strokeLineCap(SVGStrokeLineCap.Round)
+                strokeLineJoin(SVGStrokeLineJoin.Round)
             }
     ) {
         Path(attrs = Modifier.toAttrs {
-            attr("d", "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6")
+            d("M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6")
         })
         Polyline(attrs = Modifier.toAttrs {
-            attr("points", "15 3 21 3 21 9")
+            points(15 to 3, 21 to 3, 21 to 9)
         })
         Line(attrs = Modifier.toAttrs {
-            attr("x1", "10")
-            attr("y1", "14")
-            attr("x2", "21")
-            attr("y2", "3")
+            x1(10)
+            y1(14)
+            x2(21)
+            y2(3)
         })
     }
 }
