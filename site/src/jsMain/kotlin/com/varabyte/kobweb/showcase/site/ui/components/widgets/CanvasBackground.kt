@@ -2,9 +2,9 @@ package com.varabyte.kobweb.showcase.site.ui.components.widgets
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import com.varabyte.kobweb.compose.css.PointerEvents
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
-import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import kotlinx.browser.window
@@ -19,10 +19,10 @@ import kotlin.math.*
 import kotlin.random.Random
 
 private fun canvasLayerModifier(zIndex: Int): Modifier =
-    Modifier.position(Position.Fixed).top(0.px).left(0.px).width(100.vw).height(100.vh).styleModifier {
-            property("z-index", zIndex.toString())
-            property("pointer-events", "none")
-        }
+    Modifier
+        .position(Position.Fixed).top(0.px).left(0.px).width(100.vw).height(100.vh)
+        .zIndex(zIndex)
+        .pointerEvents(PointerEvents.None)
 
 private fun ensureMouseTracking() {
     js(

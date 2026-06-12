@@ -3,13 +3,14 @@ package com.varabyte.kobweb.showcase.site.ui.components.sections
 import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.css.*
 import com.varabyte.kobweb.compose.css.Transition
+import com.varabyte.kobweb.compose.css.functions.RadialGradient
 import com.varabyte.kobweb.compose.css.functions.clamp
+import com.varabyte.kobweb.compose.css.functions.radialGradient
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.*
-import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.showcase.site.ui.components.KobwebColor
 import com.varabyte.kobweb.showcase.site.ui.locales.AppStrings
@@ -31,11 +32,10 @@ private fun Modifier.glowingTextBackground(baseColor: KobwebColor, isLight: Bool
     .borderRadius(1.cssRem)
     .fontWeight(FontWeight.SemiBold)
     .textDecorationLine(TextDecorationLine.None)
-    .styleModifier {
-        val colorValue = baseColor.toRgb().copyf(alpha = if (isLight) 0.5f else 0.25f).toString()
-        property("background", "radial-gradient(ellipse at center, $colorValue 0%, rgba(0,0,0,0) 70%)")
-    }
-
+    .backgroundImage(radialGradient(RadialGradient.Shape.Ellipse, CSSPosition.Center) {
+        add(baseColor.toRgb().copyf(alpha = if (isLight) 0.5f else 0.25f), 0.percent)
+        add(Colors.Transparent, 70.percent)
+    })
 
 val HeroPrimaryBoxStyle = CssStyle {
     base {
@@ -106,11 +106,10 @@ fun HeroSection() {
                 .fontWeight(FontWeight.Bold)
                 .color(palette.primary)
                 .textAlign(TextAlign.Center)
-                .styleModifier {
-                    val shadowColor1 = palette.primary.toRgb().copyf(alpha = if (isLight) 0.3f else 0.65f).toString()
-                    val shadowColor2 = palette.primary.toRgb().copyf(alpha = if (isLight) 0.1f else 0.35f).toString()
-                    property("text-shadow", "0 0 12px $shadowColor1, 0 0 24px $shadowColor2")
-                }
+                .textShadow(
+                    TextShadow.of(0.px, 0.px, 12.px, palette.primary.toRgb().copyf(alpha = if (isLight) 0.3f else 0.65f)),
+                    TextShadow.of(0.px, 0.px, 24.px, palette.primary.toRgb().copyf(alpha = if (isLight) 0.1f else 0.35f))
+                )
                 .toAttrs()
             ) {
                 Text(AppStrings.HERO_HEADLINE)
@@ -134,9 +133,7 @@ fun HeroSection() {
                         .color(palette.primary)
                         .fontWeight(FontWeight.SemiBold)
                         .textDecorationLine(TextDecorationLine.None)
-                        .styleModifier {
-                            property("text-shadow", "0 0 10px ${palette.primary.toRgb().copyf(alpha = 0.5f)}")
-                        }
+                        .textShadow(0.px, 0.px, 10.px, palette.primary.toRgb().copyf(alpha = 0.5f))
                 )
                 Text(", the Kotlin-first web framework.")
             }
