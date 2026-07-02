@@ -1,6 +1,7 @@
 package com.varabyte.kobweb.showcase.site.worker
 
 import com.varabyte.kobweb.browser.coroutines.asCoroutineDispatcher
+import com.varabyte.kobweb.browser.http.bodyAsBytes
 import com.varabyte.kobweb.browser.http.http
 import com.varabyte.kobweb.serialization.createIOSerializer
 import com.varabyte.kobweb.showcase.site.model.ShowcaseSite
@@ -17,7 +18,7 @@ internal class FetchShowcaseWorkerFactory : WorkerFactory<ShowcaseSiteRequest, S
     override fun createStrategy(postOutput: OutputDispatcher<ShowcaseSiteResponse>) = WorkerStrategy<ShowcaseSiteRequest> { input ->
         CoroutineScope(self.asCoroutineDispatcher()).launch {
             try {
-                val jsonText = self.http.getBytes(input.dataUrl).decodeToString()
+                val jsonText = self.http.get(input.dataUrl).bodyAsBytes().decodeToString()
 
                 // Parse into a List first, then wrap it in our response object
                 val parsedSites = Json.decodeFromString<List<ShowcaseSite>>(jsonText)
