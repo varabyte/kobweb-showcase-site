@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Dispatch event to preview repo
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.KOBWEB_SHOWCASE_SITE_PAT }}
-          repository: varabyte/kobweb-showcase-site-preview
-          event-type: deploy-site-preview
+          repository: varabyte/kobweb-showcase-site-staging
+          event-type: deploy-site-staging
